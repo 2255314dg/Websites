@@ -1,0 +1,300 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}学生列表 - 学生返校数据仪表盘{% endblock %}
+
+{% block content %}
+    <!-- Dashboard Header -->
+    <header class="dashboard-header pt-5 mt-5">
+        <div class="container">
+            <h1><i class="fa fa-list"></i> 学生列表</h1>
+            <p>查看和管理所有学生的返校信息</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <!-- Filter Section -->
+        <div class="card mb-4 fade-in">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-filter"></i> 筛选条件</h5>
+                <form method="get" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">开始日期</label>
+                        <input type="date" class="form-control" name="start_date" value="{{ request.GET.start_date }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">结束日期</label>
+                        <input type="date" class="form-control" name="end_date" value="{{ request.GET.end_date }}">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">年级</label>
+                        <select class="form-select" name="class_status">
+                            <option value="">全部</option>
+                            <option value="freshman" {% if request.GET.class_status == 'freshman' %}selected{% endif %}>大一</option>
+                            <option value="sophomore" {% if request.GET.class_status == 'sophomore' %}selected{% endif %}>大二</option>
+                            <option value="junior" {% if request.GET.class_status == 'junior' %}selected{% endif %}>大三</option>
+                            <option value="senior" {% if request.GET.class_status == 'senior' %}selected{% endif %}>大四</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">专业</label>
+                        <select class="form-select" name="major">
+                            <option value="">全部</option>
+                            <option value="computer" {% if request.GET.major == 'computer' %}selected{% endif %}>计算机科学与技术</option>
+                            <option value="electronics" {% if request.GET.major == 'electronics' %}selected{% endif %}>电子信息工程</option>
+                            <option value="mechanical" {% if request.GET.major == 'mechanical' %}selected{% endif %}>机械工程</option>
+                            <option value="civil" {% if request.GET.major == 'civil' %}selected{% endif %}>土木工程</option>
+                            <option value="business" {% if request.GET.major == 'business' %}selected{% endif %}>工商管理</option>
+                            <option value="medicine" {% if request.GET.major == 'medicine' %}selected{% endif %}>临床医学</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">返校状态</label>
+                        <select class="form-select" name="return_status">
+                            <option value="">全部</option>
+                            <option value="returned" {% if request.GET.return_status == 'returned' %}selected{% endif %}>已返校</option>
+                            <option value="not_returned" {% if request.GET.return_status == 'not_returned' %}selected{% endif %}>未返校</option>
+                            <option value="delayed" {% if request.GET.return_status == 'delayed' %}selected{% endif %}>延期返校</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary me-2"><i class="fa fa-search"></i> 筛选</button>
+                        <a href="{% url 'student_list' %}" class="btn btn-secondary"><i class="fa fa-refresh"></i> 重置</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Student List Table -->
+        <div class="card fade-in">
+            <div class="card-body">
+                <h5 class="card-title mb-3">学生信息列表</h5>
+                <div class="table-responsive">
+                    <form method="post" id="batchOperationForm">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <div class="btn-group me-2">
+                                <button type="button" class="btn btn-sm btn-secondary" id="selectAll">全选</button>
+                                <button type="button" class="btn btn-sm btn-secondary" id="selectNone">取消全选</button>
+                            </div>
+                            <div class="btn-group">
+                                <button type="submit" name="action" value="batch_delete" class="btn btn-sm btn-danger" onclick="return confirm('确定要删除所选学生吗？此操作不可恢复！')">
+                                    <i class="fa fa-trash"></i> 批量删除
+                                </button>
+                                <select name="new_return_status" class="form-select form-select-sm d-inline-block w-auto" style="width: auto;">
+                                    <option value="">批量更新返校状态</option>
+                                    <option value="returned">已返校</option>
+                                    <option value="not_returned">未返校</option>
+                                    <option value="delayed">延期返校</option>
+                                </select>
+                                <button type="submit" name="action" value="batch_update_status" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-save"></i> 更新
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th><input type="checkbox" id="selectAllCheckbox"></th>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>年级</th>
+                                    <th>专业</th>
+                                    <th>返校状态</th>
+                                    <th>返校时间</th>
+                                    <th>返校方式</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in page_obj %}
+                                <tr>
+                                    <td><input type="checkbox" name="selected_students" value="{{ student.id }}"></td>
+                                    <td>{{ student.student_id }}</td>
+                                    <td>{{ student.name }}</td>
+                                    <td>
+                                        {% if student.gender == 'male' %}男
+                                        {% else %}女
+                                        {% endif %}
+                                    </td>
+                                <td>
+                                    {% if student.class_status == 'freshman' %}大一
+                                    {% elif student.class_status == 'sophomore' %}大二
+                                    {% elif student.class_status == 'junior' %}大三
+                                    {% elif student.class_status == 'senior' %}大四
+                                    {% else %}{{ student.class_status }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if student.major == 'computer' %}计算机科学与技术
+                                    {% elif student.major == 'electronics' %}电子信息工程
+                                    {% elif student.major == 'mechanical' %}机械工程
+                                    {% elif student.major == 'civil' %}土木工程
+                                    {% elif student.major == 'business' %}工商管理
+                                    {% elif student.major == 'medicine' %}临床医学
+                                    {% else %}{{ student.major }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="badge 
+                                        {% if student.return_status == 'returned' %}bg-success
+                                        {% elif student.return_status == 'not_returned' %}bg-danger
+                                        {% elif student.return_status == 'delayed' %}bg-warning text-dark
+                                        {% endif %}">
+                                        {% if student.return_status == 'returned' %}已返校
+                                        {% elif student.return_status == 'not_returned' %}未返校
+                                        {% elif student.return_status == 'delayed' %}延期返校
+                                        {% endif %}
+                                    </span>
+                                </td>
+                                <td>
+                                    {% if student.return_time %}{{ student.return_time|date:'Y-m-d H:i:s' }}
+                                    {% else %}-{% endif %}
+                                </td>
+                                <td>
+                                    {% if student.return_method == 'train' %}火车
+                                    {% elif student.return_method == 'plane' %}飞机
+                                    {% elif student.return_method == 'bus' %}汽车
+                                    {% elif student.return_method == 'private_car' %}私家车
+                                    {% elif student.return_method == 'other' %}其他
+                                    {% else %}{{ student.return_method }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'student_detail' student.id %}" class="btn btn-sm btn-info me-1"><i class="fa fa-eye"></i> 查看</a>
+                                    <a href="{% url 'student_edit' student.id %}" class="btn btn-sm btn-primary me-1"><i class="fa fa-pencil"></i> 编辑</a>
+                                    <a href="{% url 'student_delete' student.id %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> 删除</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="text-center">没有找到匹配的学生信息</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </form>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center mt-4">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1&{{ request.GET.urlencode }}" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;&laquo;</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                        {% endif %}
+
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}&{{ request.GET.urlencode }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode }}" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&{{ request.GET.urlencode }}" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;&raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </main>
+
+    {% block extra_js %}
+    <script>
+        // Batch Operation Functions
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            const selectAllButton = document.getElementById('selectAll');
+            const selectNoneButton = document.getElementById('selectNone');
+            const checkboxes = document.querySelectorAll('input[name="selected_students"]');
+            
+            // Select all checkboxes
+            function selectAll() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                selectAllCheckbox.checked = true;
+            }
+            
+            // Select none checkboxes
+            function selectNone() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                selectAllCheckbox.checked = false;
+            }
+            
+            // Select all checkbox in header
+            selectAllCheckbox.addEventListener('change', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            // Select all button
+            selectAllButton.addEventListener('click', selectAll);
+            
+            // Select none button
+            selectNoneButton.addEventListener('click', selectNone);
+            
+            // Form submission validation for batch operations
+            const form = document.getElementById('batchOperationForm');
+            form.addEventListener('submit', function(e) {
+                const action = e.submitter.name === 'action' ? e.submitter.value : null;
+                const selectedCheckboxes = document.querySelectorAll('input[name="selected_students"]:checked');
+                
+                // Check if any students are selected
+                if (selectedCheckboxes.length === 0) {
+                    alert('请先选择要操作的学生！');
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Check if new return status is selected for batch update
+                if (action === 'batch_update_status') {
+                    const newStatus = document.querySelector('select[name="new_return_status"]').value;
+                    if (!newStatus) {
+                        alert('请选择要更新的返校状态！');
+                        e.preventDefault();
+                        return;
+                    }
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

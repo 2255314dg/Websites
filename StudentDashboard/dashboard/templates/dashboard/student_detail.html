@@ -1,0 +1,263 @@
+{% extends 'dashboard/base.html' %}
+
+{% block extra_css %}
+<style>
+    .chart-container {
+        position: relative;
+        height: 300px;
+        margin: 2rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block title %}学生详情 - {{ student.name }} - 学生返校数据仪表盘{% endblock %}
+
+{% block content %}
+    <!-- Dashboard Header -->
+    <header class="dashboard-header pt-5 mt-5">
+        <div class="container">
+            <h1><i class="fa fa-user"></i> 学生详情</h1>
+            <p>查看学生{{ student.name }}的详细返校信息</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mt-4">
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> 返回学生列表
+            </a>
+        </div>
+
+        <!-- Student Details Card -->
+        <div class="row">
+            <!-- Basic Information -->
+            <div class="col-md-6">
+                <div class="card mb-4 fade-in">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0"><i class="fa fa-info-circle"></i> 基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">学号：</div>
+                            <div class="col-8">{{ student.student_id }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">姓名：</div>
+                            <div class="col-8">{{ student.name }}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">性别：</div>
+                            <div class="col-8">{% if student.gender == 'male' %}男{% else %}女{% endif %}</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">年级：</div>
+                            <div class="col-8">
+                                {% if student.class_status == 'freshman' %}大一
+                                {% elif student.class_status == 'sophomore' %}大二
+                                {% elif student.class_status == 'junior' %}大三
+                                {% elif student.class_status == 'senior' %}大四
+                                {% else %}{{ student.class_status }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">专业：</div>
+                            <div class="col-8">
+                                {% if student.major == 'computer' %}计算机科学与技术
+                                {% elif student.major == 'electronics' %}电子信息工程
+                                {% elif student.major == 'mechanical' %}机械工程
+                                {% elif student.major == 'civil' %}土木工程
+                                {% elif student.major == 'business' %}工商管理
+                                {% elif student.major == 'medicine' %}临床医学
+                                {% else %}{{ student.major }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">联系电话：</div>
+                            <div class="col-8">{{ student.contact }}</div>
+                        </div>
+                        {% if student.remarks %}
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">备注：</div>
+                            <div class="col-8">{{ student.remarks }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return Information -->
+            <div class="col-md-6">
+                <div class="card mb-4 fade-in">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0"><i class="fa fa-home"></i> 返校信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">返校状态：</div>
+                            <div class="col-8">
+                                <span class="badge 
+                                    {% if student.return_status == 'returned' %}bg-success
+                                    {% elif student.return_status == 'not_returned' %}bg-danger
+                                    {% elif student.return_status == 'delayed' %}bg-warning text-dark
+                                    {% endif %}">
+                                    {% if student.return_status == 'returned' %}已返校
+                                    {% elif student.return_status == 'not_returned' %}未返校
+                                    {% elif student.return_status == 'delayed' %}延期返校
+                                    {% else %}{{ student.return_status }}
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">返校时间：</div>
+                            <div class="col-8">
+                                {% if student.return_time %}{{ student.return_time|date:'Y年m月d日 H:i:s' }}{% else %}尚未返校{% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">返校方式：</div>
+                            <div class="col-8">
+                                {% if student.return_method == 'train' %}火车
+                                {% elif student.return_method == 'plane' %}飞机
+                                {% elif student.return_method == 'bus' %}汽车
+                                {% elif student.return_method == 'private_car' %}私家车
+                                {% elif student.return_method == 'other' %}其他
+                                {% else %}{{ student.return_method }}
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4 fw-bold">数据更新：</div>
+                            <div class="col-8">{{ student.updated_at|date:'Y年m月d日 H:i:s' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="card mb-4 fade-in">
+            <div class="card-body text-center">
+                <a href="{% url 'student_edit' student.id %}" class="btn btn-primary btn-lg me-3">
+                    <i class="fa fa-pencil"></i> 编辑信息
+                </a>
+                <a href="{% url 'student_delete' student.id %}" class="btn btn-danger btn-lg me-3">
+                    <i class="fa fa-trash"></i> 删除学生
+                </a>
+                <a href="{% url 'student_list' %}" class="btn btn-secondary btn-lg">
+                    <i class="fa fa-list"></i> 返回列表
+                </a>
+            </div>
+        </div>
+
+        <!-- Student Status Visualization -->
+        <div class="card fade-in">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0"><i class="fa fa-bar-chart"></i> 返校状态统计</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-container">
+                            <canvas id="methodChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% block extra_js %}
+    <script>
+        // Initialize Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get student data from Django
+            const return_status = "{{ student.return_status|default:'' }}";
+            const return_method = "{{ student.return_method|default:'' }}";
+
+            // Status Chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['已返校', '未返校', '延期返校'],
+                    datasets: [{
+                        data: [
+                            return_status === 'returned' ? 1 : 0,
+                            return_status === 'not_returned' ? 1 : 0,
+                            return_status === 'delayed' ? 1 : 0
+                        ],
+                        backgroundColor: ['#28a745', '#dc3545', '#ffc107'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: '学生返校状态'
+                        },
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true
+                        }
+                    }
+                }
+            });
+
+            // Method Chart
+            const methodCtx = document.getElementById('methodChart').getContext('2d');
+            new Chart(methodCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['火车', '飞机', '汽车', '私家车', '其他'],
+                    datasets: [{
+                        data: [
+                            return_method === 'train' ? 1 : 0,
+                            return_method === 'plane' ? 1 : 0,
+                            return_method === 'bus' ? 1 : 0,
+                            return_method === 'private_car' ? 1 : 0,
+                            return_method === 'other' ? 1 : 0
+                        ],
+                        backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#9966ff'],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: '返校方式'
+                        },
+                        animation: {
+                            animateRotate: true,
+                            animateScale: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    {% endblock %}
+{% endblock %}
