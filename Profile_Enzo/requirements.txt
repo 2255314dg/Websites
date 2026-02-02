@@ -1,0 +1,22 @@
+# Django项目生产环境依赖
+Django==5.2.3
+
+# 生产环境服务器
+# 使用gunicorn作为WSGI服务器
+gunicorn==22.0.0
+
+# 静态文件处理
+# 使用whitenoise在生产环境中处理静态文件
+whitenoise==6.6.0
+
+# 数据库驱动
+# 如果生产环境使用SQLite，无需额外驱动
+# 如果使用PostgreSQL，取消下面的注释
+# psycopg2-binary==2.9.9
+
+# 如果使用MySQL，取消下面的注释
+# mysqlclient==2.2.4
+
+# Python环境依赖
+# 确保使用Python 3.10或更高版本
+# python>=3.10
