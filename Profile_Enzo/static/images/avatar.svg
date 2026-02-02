@@ -1,0 +1,34 @@
+<svg width="250" height="250" viewBox="0 0 250 250" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆形 -->
+  <circle cx="125" cy="125" r="125" fill="#3498db"/>
+  
+  <!-- 脸部轮廓 -->
+  <circle cx="125" cy="110" r="60" fill="#f5cba7"/>
+  
+  <!-- 眼睛 -->
+  <circle cx="100" cy="100" r="8" fill="#34495e"/>
+  <circle cx="150" cy="100" r="8" fill="#34495e"/>
+  
+  <!-- 高光 -->
+  <circle cx="102" cy="98" r="3" fill="white"/>
+  <circle cx="152" cy="98" r="3" fill="white"/>
+  
+  <!-- 嘴巴 -->
+  <path d="M 100 130 Q 125 145 150 130" stroke="#34495e" stroke-width="4" fill="none"/>
+  
+  <!-- 头发 -->
+  <path d="M 65 110 Q 50 60 100 60 Q 125 40 150 60 Q 200 60 185 110" fill="#8b4513"/>
+  
+  <!-- 耳朵 -->
+  <ellipse cx="65" cy="110" rx="8" ry="15" fill="#f5cba7"/>
+  <ellipse cx="185" cy="110" rx="8" ry="15" fill="#f5cba7"/>
+  
+  <!-- 颈部 -->
+  <rect x="110" y="170" width="30" height="40" fill="#f5cba7"/>
+  
+  <!-- 身体 -->
+  <path d="M 80 210 L 80 240 L 170 240 L 170 210 Q 170 190 155 180 Q 140 170 125 170 Q 110 170 95 180 Q 80 190 80 210" fill="#2ecc71"/>
+  
+  <!-- 装饰 -->
+  <text x="125" y="280" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">个人作品集</text>
+</svg>

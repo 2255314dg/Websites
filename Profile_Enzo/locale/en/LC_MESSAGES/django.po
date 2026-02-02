@@ -1,0 +1,203 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"MIME-Version: 1.0\n"
+
+# 基本导航和页面标题
+msgid "Enzo的个人主页"
+msgstr "Enzo's Personal Homepage"
+
+msgid "首页"
+msgstr "Home"
+
+msgid "关于我"
+msgstr "About Me"
+
+msgid "作品集"
+msgstr "Portfolio"
+
+msgid "联系方式"
+msgstr "Contact"
+
+msgid "个人作品集"
+msgstr "Personal Portfolio"
+
+# 首页内容
+msgid "精选项目"
+msgstr "Featured Projects"
+
+msgid "查看详情"
+msgstr "View Details"
+
+msgid "查看所有项目"
+msgstr "View All Projects"
+
+# 关于我页面
+msgid "了解我的爱好、技能和经历"
+msgstr "Learn about my hobbies, skills, and experiences"
+
+msgid "个人爱好"
+msgstr "Personal Hobbies"
+
+msgid "阅读"
+msgstr "Reading"
+
+msgid "摄影"
+msgstr "Photography"
+
+msgid "旅行"
+msgstr "Travel"
+
+msgid "编程"
+msgstr "Programming"
+
+msgid "个人证书"
+msgstr "Certifications"
+
+msgid "英语四级证书"
+msgstr "CET-4 Certificate"
+
+msgid "计算机二级证书"
+msgstr "National Computer Rank Examination Level 2"
+
+msgid "个人简介"
+msgstr "Personal Profile"
+
+msgid "教育背景"
+msgstr "Education"
+
+msgid "工作经历"
+msgstr "Work Experience"
+
+msgid "技能"
+msgstr "Skills"
+
+msgid "前端开发"
+msgstr "Frontend Development"
+
+msgid "后端开发"
+msgstr "Backend Development"
+
+msgid "数据库"
+msgstr "Database"
+
+msgid "版本控制"
+msgstr "Version Control"
+
+msgid "数字媒体技术学士学位"
+msgstr "Bachelor of Digital Media Technology"
+
+msgid "高级Web开发工程师"
+msgstr "Senior Web Developer"
+
+# 作品集页面
+msgid "我的作品集"
+msgstr "My Portfolio"
+
+msgid "探索我的创意项目和作品"
+msgstr "Explore my creative projects and works"
+
+msgid "所有项目"
+msgstr "All Projects"
+
+msgid "至今"
+msgstr "Present"
+
+msgid "访问项目"
+msgstr "Visit Project"
+
+# 联系页面
+msgid "联系我"
+msgstr "Contact Me"
+
+msgid "有任何问题或合作意向？请随时联系我"
+msgstr "Have any questions or collaboration intentions? Please feel free to contact me"
+
+msgid "留言板"
+msgstr "Message Board"
+
+msgid "姓名"
+msgstr "Name"
+
+msgid "请输入您的姓名"
+msgstr "Please enter your name"
+
+msgid "邮箱"
+msgstr "Email"
+
+msgid "请输入您的邮箱"
+msgstr "Please enter your email"
+
+msgid "主题"
+msgstr "Subject"
+
+msgid "请输入消息主题"
+msgstr "Please enter the message subject"
+
+msgid "消息内容"
+msgstr "Message Content"
+
+msgid "请输入您的消息内容"
+msgstr "Please enter your message content"
+
+msgid "发送"
+msgstr "Send"
+
+msgid "联系信息"
+msgstr "Contact Information"
+
+msgid "北京市朝阳区科技园区"
+msgstr "Chaoyang District Science and Technology Park, Beijing"
+
+msgid "关注我"
+msgstr "Follow Me"
+
+msgid "工作时间"
+msgstr "Working Hours"
+
+msgid "周一至周五"
+msgstr "Monday to Friday"
+
+msgid "周六"
+msgstr "Saturday"
+
+msgid "周日"
+msgstr "Sunday"
+
+msgid "休息"
+msgstr "Closed"
+
+msgid "地图将在这里显示"
+msgstr "Map will be displayed here"
+
+# 项目详情页面
+msgid "项目描述"
+msgstr "Project Description"
+
+msgid "项目链接"
+msgstr "Project Links"
+
+msgid "GitHub仓库"
+msgstr "GitHub Repository"
+
+msgid "返回作品集"
+msgstr "Back to Portfolio"
+
+# 音乐控制
+msgid "播放/暂停音乐"
+msgstr "Play/Pause Music"
+
+msgid "您的浏览器不支持音频元素。"
+msgstr "Your browser does not support the audio element."
+
+# 页脚
+msgid "保留所有权利"
+msgstr "All rights reserved"
+
+# 语言切换
+msgid "中文"
+msgstr "Chinese"
+
+msgid "English"
+msgstr "English"
