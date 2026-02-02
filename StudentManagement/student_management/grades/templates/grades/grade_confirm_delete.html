@@ -1,0 +1,37 @@
+{% extends 'students/base.html' %}
+
+{% block title %}确认删除成绩{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>确认删除成绩</h2>
+    <div class="confirm-delete">
+        <p>您确定要删除学生 <strong>{{ object.student.name }}</strong> 的课程 <strong>{{ object.course.title }}</strong> 的成绩记录吗？</p>
+        <p>学期：{{ object.get_semester_display }}</p>
+        <p class="warning-message">此操作不可恢复，将删除该成绩的所有相关信息。</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn delete-btn">确认删除</button>
+                <a href="{% url 'grade_detail' object.pk %}" class="btn cancel-btn">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .confirm-delete {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 1.5rem;
+        border-radius: 8px;
+    }
+    
+    .warning-message {
+        color: #dc3545;
+        font-weight: bold;
+        margin: 1rem 0;
+    }
+</style>
+{% endblock %}

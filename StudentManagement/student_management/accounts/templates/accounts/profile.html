@@ -1,0 +1,51 @@
+{% extends 'students/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">个人资料</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <h4>基本信息</h4>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row mb-2">
+                                <div class="col-sm-4">用户名:</div>
+                                <div class="col-sm-8">{{ user.username }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">姓名:</div>
+                                <div class="col-sm-8">{{ user.first_name }} {{ user.last_name }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">邮箱:</div>
+                                <div class="col-sm-8">{{ user.email }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">用户类型:</div>
+                                <div class="col-sm-8">{{ user.profile.get_user_type_display }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">联系电话:</div>
+                                <div class="col-sm-8">{{ user.profile.phone|default:"未设置" }}</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-sm-4">地址:</div>
+                                <div class="col-sm-8">{{ user.profile.address|default:"未设置" }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary">编辑资料</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

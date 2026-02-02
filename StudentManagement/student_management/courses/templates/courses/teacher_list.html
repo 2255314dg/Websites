@@ -1,0 +1,53 @@
+{% extends 'students/base.html' %}
+
+{% block title %}教师列表{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>教师列表</h2>
+    
+    <!-- 导航按钮 -->
+    <div class="nav-buttons">
+        <a href="{% url 'teacher_create' %}" class="btn add-btn">添加教师</a>
+        <a href="{% url 'course_list' %}" class="btn view-btn">课程管理</a>
+        <a href="{% url 'schedule_list' %}" class="btn view-btn">排课管理</a>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>教师编号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>部门</th>
+                <th>职位</th>
+                <th>邮箱</th>
+                <th>电话</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for teacher in teachers %}
+            <tr>
+                <td>{{ teacher.teacher_id }}</td>
+                <td>{{ teacher.name }}</td>
+                <td>{{ teacher.get_gender_display }}</td>
+                <td>{{ teacher.department }}</td>
+                <td>{{ teacher.position }}</td>
+                <td>{{ teacher.email }}</td>
+                <td>{{ teacher.phone }}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'teacher_detail' teacher.pk %}" class="btn view-btn">查看</a>
+                    <a href="{% url 'teacher_update' teacher.pk %}" class="btn edit-btn">编辑</a>
+                    <a href="{% url 'teacher_delete' teacher.pk %}" class="btn delete-btn">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="no-data">暂无教师数据</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'students/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{% if form.instance.id %}编辑课程{% else %}添加课程{% endif %}{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>{% if form.instance.id %}编辑课程{% else %}添加课程{% endif %}</h2>
+    <form method="post" class="data-form">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>基本信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.course_code.id_for_label }}">课程代码:</label>
+                {% render_field form.course_code class="form-control" %}
+                {% if form.course_code.errors %}
+                <div class="error-message">{{ form.course_code.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.title.id_for_label }}">课程名称:</label>
+                {% render_field form.title class="form-control" %}
+                {% if form.title.errors %}
+                <div class="error-message">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.course_type.id_for_label }}">课程类型:</label>
+                {% render_field form.course_type class="form-control" %}
+                {% if form.course_type.errors %}
+                <div class="error-message">{{ form.course_type.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.semester.id_for_label }}">开课学期:</label>
+                {% render_field form.semester class="form-control" placeholder="格式: 2024-2025-1" %}
+                {% if form.semester.errors %}
+                <div class="error-message">{{ form.semester.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>教学信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.teacher.id_for_label }}">任课教师:</label>
+                {% render_field form.teacher class="form-control" %}
+                {% if form.teacher.errors %}
+                <div class="error-message">{{ form.teacher.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.credits.id_for_label }}">学分:</label>
+                {% render_field form.credits class="form-control" %}
+                {% if form.credits.errors %}
+                <div class="error-message">{{ form.credits.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.max_students.id_for_label }}">最大选课人数:</label>
+                {% render_field form.max_students class="form-control" %}
+                {% if form.max_students.errors %}
+                <div class="error-message">{{ form.max_students.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">课程描述:</label>
+                {% render_field form.description class="form-control" rows="4" %}
+                {% if form.description.errors %}
+                <div class="error-message">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn submit-btn">保存</button>
+            <a href="{% url 'course_list' %}" class="btn cancel-btn">取消</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

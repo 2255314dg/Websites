@@ -1,0 +1,119 @@
+{% extends 'students/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{% if form.instance.id %}编辑成绩{% else %}添加成绩{% endif %}{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>{% if form.instance.id %}编辑成绩{% else %}添加成绩{% endif %}</h2>
+    
+    <form method="post" class="data-form">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>基本信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.student.id_for_label }}">学生:</label>
+                {% render_field form.student class="form-control" %}
+                {% if form.student.errors %}
+                <div class="error-message">{{ form.student.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.course.id_for_label }}">课程:</label>
+                {% render_field form.course class="form-control" %}
+                {% if form.course.errors %}
+                <div class="error-message">{{ form.course.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.semester.id_for_label }}">学期:</label>
+                {% render_field form.semester class="form-control" %}
+                {% if form.semester.errors %}
+                <div class="error-message">{{ form.semester.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>成绩信息</h3>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{ form.midterm_score.id_for_label }}">期中考试成绩:</label>
+                    {% render_field form.midterm_score class="form-control" %}
+                    {% if form.midterm_score.errors %}
+                    <div class="error-message">{{ form.midterm_score.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label for="{{ form.final_score.id_for_label }}">期末考试成绩:</label>
+                    {% render_field form.final_score class="form-control" %}
+                    {% if form.final_score.errors %}
+                    <div class="error-message">{{ form.final_score.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="{{ form.attendance_score.id_for_label }}">考勤成绩:</label>
+                    {% render_field form.attendance_score class="form-control" %}
+                    {% if form.attendance_score.errors %}
+                    <div class="error-message">{{ form.attendance_score.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group col-md-6">
+                    <label for="{{ form.assignment_score.id_for_label }}">作业成绩:</label>
+                    {% render_field form.assignment_score class="form-control" %}
+                    {% if form.assignment_score.errors %}
+                    <div class="error-message">{{ form.assignment_score.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.project_score.id_for_label }}">项目成绩:</label>
+                {% render_field form.project_score class="form-control" %}
+                {% if form.project_score.errors %}
+                <div class="error-message">{{ form.project_score.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.comments.id_for_label }}">教师评语:</label>
+                {% render_field form.comments class="form-control" rows="3" %}
+                {% if form.comments.errors %}
+                <div class="error-message">{{ form.comments.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn submit-btn">保存</button>
+            <a href="{% url 'grade_list' %}" class="btn cancel-btn">取消</a>
+            {% if form.instance.id %}
+            <a href="{% url 'grade_delete' form.instance.id %}" class="btn delete-btn" style="margin-left: auto;">删除</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<style>
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .form-row .form-group {
+        flex: 1;
+        margin-bottom: 0;
+    }
+</style>
+{% endblock %}

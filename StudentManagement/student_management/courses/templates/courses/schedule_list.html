@@ -1,0 +1,50 @@
+{% extends 'students/base.html' %}
+
+{% block title %}排课列表{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>排课列表</h2>
+    
+    <!-- 导航按钮 -->
+    <div class="nav-buttons">
+        <a href="{% url 'schedule_create' %}" class="btn add-btn">添加排课</a>
+        <a href="{% url 'course_list' %}" class="btn view-btn">课程管理</a>
+        <a href="{% url 'teacher_list' %}" class="btn view-btn">教师管理</a>
+    </div>
+    
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>课程名称</th>
+                <th>教师</th>
+                <th>星期</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+                <th>教室</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for schedule in schedules %}
+            <tr>
+                <td><a href="{% url 'course_detail' schedule.course.pk %}">{{ schedule.course.title }}</a></td>
+                <td>{{ schedule.course.teacher.name|default:"未分配" }}</td>
+                <td>{{ schedule.get_weekday_display }}</td>
+                <td>{{ schedule.start_time }}</td>
+                <td>{{ schedule.end_time }}</td>
+                <td>{{ schedule.classroom }}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'schedule_update' schedule.pk %}" class="btn edit-btn">编辑</a>
+                    <a href="{% url 'schedule_delete' schedule.pk %}" class="btn delete-btn">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="7" class="no-data">暂无排课数据</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends 'students/base.html' %}
+
+{% block title %}成绩列表{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>成绩列表</h2>
+    
+    <!-- 导航按钮 -->
+    <div class="nav-buttons">
+        <a href="{% url 'grade_create' %}" class="btn add-btn">添加成绩</a>
+        <a href="{% url 'student_list' %}" class="btn view-btn">学生管理</a>
+        <a href="{% url 'course_list' %}" class="btn view-btn">课程管理</a>
+    </div>
+    
+    <!-- 搜索表单 -->
+    <div class="search-form">
+        <h3>成绩查询</h3>
+        <form method="get" class="form-inline">
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    {{ search_form.student_id.label_tag }}
+                    {{ search_form.student_id }}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ search_form.student_name.label_tag }}
+                    {{ search_form.student_name }}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ search_form.course_code.label_tag }}
+                    {{ search_form.course_code }}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ search_form.course_name.label_tag }}
+                    {{ search_form.course_name }}
+                </div>
+                <div class="form-group col-md-2">
+                    {{ search_form.semester.label_tag }}
+                    {{ search_form.semester }}
+                </div>
+                <div class="form-group col-md-2 align-self-end">
+                    <button type="submit" class="btn search-btn">搜索</button>
+                    <a href="{% url 'grade_list' %}" class="btn reset-btn">重置</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    
+    <!-- 成绩列表 -->
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>学号</th>
+                <th>姓名</th>
+                <th>课程代码</th>
+                <th>课程名称</th>
+                <th>学期</th>
+                <th>总评成绩</th>
+                <th>等级</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+            <tr>
+                <td><a href="{% url 'student_detail' grade.student.student_id %}">{{ grade.student.student_id }}</a></td>
+                <td>{{ grade.student.name }}</td>
+                <td><a href="{% url 'course_detail' grade.course.pk %}">{{ grade.course.course_code }}</a></td>
+                <td>{{ grade.course.title }}</td>
+                <td>{{ grade.get_semester_display }}</td>
+                <td>{{ grade.total_score|default:"-" }}</td>
+                <td>{{ grade.grade_level|default:"-" }}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'grade_detail' grade.pk %}" class="btn view-btn">详情</a>
+                    <a href="{% url 'grade_update' grade.pk %}" class="btn edit-btn">编辑</a>
+                    <a href="{% url 'grade_delete' grade.pk %}" class="btn delete-btn">删除</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="no-data">暂无成绩数据</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- 分页导航 -->
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="page-links">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}">上一页</a>
+            {% endif %}
+            <span class="page-current">
+                第 {{ page_obj.number }} 页，共 {{ page_obj.paginator.num_pages }} 页
+            </span>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET %}&{{ request.GET.urlencode }}{% endif %}">下一页</a>
+            {% endif %}
+        </span>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .search-form {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+    }
+    
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+    }
+    
+    .search-btn, .reset-btn {
+        margin-top: 1rem;
+    }
+    
+    .pagination {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    
+    .page-links {
+        background-color: #f8f9fa;
+        padding: 0.5rem 1rem;
+        border-radius: 4px;
+        border: 1px solid #e9ecef;
+    }
+    
+    .page-current {
+        margin: 0 1rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ course.title }} - 课程详情{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>课程详情</h2>
+    <div class="detail-card">
+        <div class="detail-row">
+            <span class="detail-label">课程代码:</span>
+            <span class="detail-value">{{ course.course_code }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">课程名称:</span>
+            <span class="detail-value">{{ course.title }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">课程类型:</span>
+            <span class="detail-value">{{ course.get_course_type_display }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">开课学期:</span>
+            <span class="detail-value">{{ course.semester }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">学分:</span>
+            <span class="detail-value">{{ course.credits }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">任课教师:</span>
+            <span class="detail-value">
+                {% if course.teacher %}
+                    <a href="{% url 'teacher_detail' course.teacher.pk %}">{{ course.teacher.name }}</a>
+                {% else %}
+                    未分配
+                {% endif %}
+            </span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">最大选课人数:</span>
+            <span class="detail-value">{{ course.max_students }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">课程描述:</span>
+            <span class="detail-value">{{ course.description|default:'无' }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">创建时间:</span>
+            <span class="detail-value">{{ course.created_at|date:'Y-m-d H:i' }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">更新时间:</span>
+            <span class="detail-value">{{ course.updated_at|date:'Y-m-d H:i' }}</span>
+        </div>
+        <div class="action-buttons">
+            <a href="{% url 'course_update' course.pk %}" class="btn edit-btn">编辑</a>
+            <a href="{% url 'course_delete' course.pk %}" class="btn delete-btn">删除</a>
+            <a href="{% url 'course_list' %}" class="btn back-btn">返回列表</a>
+        </div>
+    </div>
+
+    <!-- 排课信息 -->
+    <h3 style="margin-top: 2rem;">排课信息</h3>
+    <div class="detail-card">
+        {% if schedules %}
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>星期</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>教室</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for schedule in schedules %}
+                    <tr>
+                        <td>{{ schedule.get_weekday_display }}</td>
+                        <td>{{ schedule.start_time }}</td>
+                        <td>{{ schedule.end_time }}</td>
+                        <td>{{ schedule.classroom }}</td>
+                        <td class="action-buttons">
+                            <a href="{% url 'schedule_update' schedule.pk %}" class="btn edit-btn">编辑</a>
+                            <a href="{% url 'schedule_delete' schedule.pk %}" class="btn delete-btn">删除</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">暂无排课信息</p>
+        {% endif %}
+        <div style="margin-top: 1rem;">
+            <a href="{% url 'schedule_create' %}" class="btn add-btn">添加排课信息</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

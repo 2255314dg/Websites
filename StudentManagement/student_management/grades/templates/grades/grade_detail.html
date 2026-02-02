@@ -1,0 +1,155 @@
+{% extends 'students/base.html' %}
+
+{% block title %}成绩详情{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>成绩详情</h2>
+    
+    <div class="detail-container">
+        <div class="detail-section">
+            <h3>基本信息</h3>
+            <div class="detail-row">
+                <span class="detail-label">学生:</span>
+                <span class="detail-value">
+                    <a href="{% url 'student_detail' grade.student.student_id %}">{{ grade.student.name }}</a> ({{ grade.student.student_id }})
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">课程:</span>
+                <span class="detail-value">
+                    <a href="{% url 'course_detail' grade.course.pk %}">{{ grade.course.title }}</a> ({{ grade.course.course_code }})
+                </span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">学期:</span>
+                <span class="detail-value">{{ grade.get_semester_display }}</span>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>成绩信息</h3>
+            <div class="detail-row">
+                <span class="detail-label">期中考试成绩:</span>
+                <span class="detail-value">{{ grade.midterm_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">期末考试成绩:</span>
+                <span class="detail-value">{{ grade.final_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">考勤成绩:</span>
+                <span class="detail-value">{{ grade.attendance_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">作业成绩:</span>
+                <span class="detail-value">{{ grade.assignment_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">项目成绩:</span>
+                <span class="detail-value">{{ grade.project_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row total-score">
+                <span class="detail-label">总评成绩:</span>
+                <span class="detail-value">{{ grade.total_score|default:"-" }}</span>
+            </div>
+            <div class="detail-row grade-level">
+                <span class="detail-label">等级:</span>
+                <span class="detail-value">{{ grade.grade_level|default:"-" }}</span>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>教师评语</h3>
+            <div class="detail-row comment">
+                <span class="detail-value">{{ grade.comments|default:"暂无评语" }}</span>
+            </div>
+        </div>
+        
+        <div class="detail-section">
+            <h3>更新信息</h3>
+            <div class="detail-row">
+                <span class="detail-label">创建时间:</span>
+                <span class="detail-value">{{ grade.created_at|date:"Y-m-d H:i:s" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">更新时间:</span>
+                <span class="detail-value">{{ grade.updated_at|date:"Y-m-d H:i:s" }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-actions">
+        <a href="{% url 'grade_update' grade.pk %}" class="btn edit-btn">编辑成绩</a>
+        <a href="{% url 'grade_delete' grade.pk %}" class="btn delete-btn">删除成绩</a>
+        <a href="{% url 'grade_list' %}" class="btn cancel-btn">返回列表</a>
+    </div>
+</div>
+
+<style>
+    .detail-container {
+        margin-bottom: 1.5rem;
+    }
+    
+    .detail-section {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-radius: 8px;
+    }
+    
+    .detail-section h3 {
+        margin-top: 0;
+        margin-bottom: 1rem;
+        color: #343a40;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 0.5rem;
+    }
+    
+    .detail-row {
+        display: flex;
+        margin-bottom: 0.75rem;
+        align-items: flex-start;
+    }
+    
+    .detail-label {
+        width: 150px;
+        font-weight: bold;
+        color: #495057;
+        margin-right: 1rem;
+    }
+    
+    .detail-value {
+        flex: 1;
+        color: #212529;
+    }
+    
+    .total-score {
+        border-top: 2px solid #dee2e6;
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+    }
+    
+    .total-score .detail-value {
+        font-weight: bold;
+        font-size: 1.25rem;
+        color: #007bff;
+    }
+    
+    .grade-level {
+        margin-bottom: 0;
+    }
+    
+    .grade-level .detail-value {
+        font-weight: bold;
+        font-size: 1.25rem;
+        color: #28a745;
+    }
+    
+    .comment .detail-value {
+        white-space: pre-wrap;
+        line-height: 1.5;
+    }
+</style>
+{% endblock %}

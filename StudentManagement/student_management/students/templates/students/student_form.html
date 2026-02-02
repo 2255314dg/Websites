@@ -1,0 +1,244 @@
+{% extends 'students/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{% if form.instance.student_id %}编辑学生{% else %}添加学生{% endif %} - 学生信息管理系统{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">{% if form.instance.student_id %}编辑学生{% else %}添加学生{% endif %}</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- 基本信息 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">基本信息</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.student_id.label_tag }}
+                                    {{ form.student_id|add_class:"form-control" }}
+                                    {% if form.student_id.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.student_id.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.name.label_tag }}
+                                    {{ form.name|add_class:"form-control" }}
+                                    {% if form.name.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.gender.label_tag }}
+                                    {{ form.gender|add_class:"form-control" }}
+                                    {% if form.gender.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.gender.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.date_of_birth.label_tag }}
+                                    {{ form.date_of_birth|add_class:"form-control datepicker" }}
+                                    {% if form.date_of_birth.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.date_of_birth.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.ethnicity.label_tag }}
+                                    {{ form.ethnicity|add_class:"form-control" }}
+                                    {% if form.ethnicity.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.ethnicity.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.political_status.label_tag }}
+                                    {{ form.political_status|add_class:"form-control" }}
+                                    {% if form.political_status.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.political_status.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.major.label_tag }}
+                                    {{ form.major|add_class:"form-control" }}
+                                    {% if form.major.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.major.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.class_name.label_tag }}
+                                    {{ form.class_name|add_class:"form-control" }}
+                                    {% if form.class_name.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.class_name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.status.label_tag }}
+                                    {{ form.status|add_class:"form-control" }}
+                                    {% if form.status.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.status.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.enrollment_date.label_tag }}
+                                    {{ form.enrollment_date|add_class:"form-control datepicker" }}
+                                    {% if form.enrollment_date.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.enrollment_date.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.id_card.label_tag }}
+                                    {{ form.id_card|add_class:"form-control" }}
+                                    {% if form.id_card.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.id_card.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.photo.label_tag }}
+                                    {{ form.photo|add_class:"form-control-file" }}
+                                    {% if form.photo.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.photo.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    {% if form.instance.photo %}
+                                        <div class="mt-2">
+                                            <p>当前照片:</p>
+                                            <img src="{{ form.instance.photo.url }}" alt="当前照片" style="max-height: 150px; border-radius: 4px;">
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 联系方式 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">联系方式</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.email.label_tag }}
+                                    {{ form.email|add_class:"form-control" }}
+                                    {% if form.email.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.phone.label_tag }}
+                                    {{ form.phone|add_class:"form-control" }}
+                                    {% if form.phone.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.phone.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.address.label_tag }}
+                                    {{ form.address|add_class:"form-control" }}
+                                    {% if form.address.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.address.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form.emergency_contact.label_tag }}
+                                    {{ form.emergency_contact|add_class:"form-control" }}
+                                    {% if form.emergency_contact.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.emergency_contact.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.emergency_phone.label_tag }}
+                                    {{ form.emergency_phone|add_class:"form-control" }}
+                                    {% if form.emergency_phone.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.emergency_phone.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <div class="form-group">
+                                    {{ form.notes.label_tag }}
+                                    {{ form.notes|add_class:"form-control" }}
+                                    {% if form.notes.errors %}
+                                        <div class="text-danger mt-1">
+                                            {% for error in form.notes.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 操作按钮 -->
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> 保存
+                        </button>
+                        <a href="{% url 'student-list' %}" class="btn btn-secondary ml-2">
+                            <i class="fas fa-times"></i> 取消
+                        </a>
+                    </div>
+                    {% if form.instance.student_id %}
+                        <a href="{% url 'student-delete' form.instance.student_id %}" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> 删除
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 添加jQuery和Bootstrap日期选择器 -->
+<script>
+    $(document).ready(function() {
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+</script>
+{% endblock %}

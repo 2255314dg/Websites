@@ -1,0 +1,116 @@
+{% extends 'students/base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}{% if form.instance.id %}编辑教师{% else %}添加教师{% endif %}{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>{% if form.instance.id %}编辑教师{% else %}添加教师{% endif %}</h2>
+    <form method="post" class="data-form" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <h3>基本信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.teacher_id.id_for_label }}">教师编号:</label>
+                {% render_field form.teacher_id class="form-control" %}
+                {% if form.teacher_id.errors %}
+                <div class="error-message">{{ form.teacher_id.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.name.id_for_label }}">姓名:</label>
+                {% render_field form.name class="form-control" %}
+                {% if form.name.errors %}
+                <div class="error-message">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.gender.id_for_label }}">性别:</label>
+                {% render_field form.gender class="form-control" %}
+                {% if form.gender.errors %}
+                <div class="error-message">{{ form.gender.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.avatar.id_for_label }}">头像:</label>
+                {% render_field form.avatar class="form-control-file" %}
+                {% if form.avatar.errors %}
+                <div class="error-message">{{ form.avatar.errors }}</div>
+                {% endif %}
+                
+                <!-- 当前头像预览 -->
+                {% if form.instance.avatar %}
+                <div class="current-avatar">
+                    <p>当前头像:</p>
+                    <img src="{{ form.instance.avatar.url }}" alt="当前头像" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>联系信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">邮箱:</label>
+                {% render_field form.email class="form-control" %}
+                {% if form.email.errors %}
+                <div class="error-message">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.phone.id_for_label }}">电话:</label>
+                {% render_field form.phone class="form-control" %}
+                {% if form.phone.errors %}
+                <div class="error-message">{{ form.phone.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h3>工作信息</h3>
+            
+            <div class="form-group">
+                <label for="{{ form.department.id_for_label }}">部门:</label>
+                {% render_field form.department class="form-control" %}
+                {% if form.department.errors %}
+                <div class="error-message">{{ form.department.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.position.id_for_label }}">职位:</label>
+                {% render_field form.position class="form-control" %}
+                {% if form.position.errors %}
+                <div class="error-message">{{ form.position.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn submit-btn">保存</button>
+            <a href="{% url 'teacher_list' %}" class="btn cancel-btn">取消</a>
+            {% if form.instance.id %}
+            <a href="{% url 'teacher_delete' form.instance.id %}" class="btn delete-btn" style="margin-left: auto;">删除</a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<style>
+    .current-avatar {
+        margin-top: 10px;
+    }
+    
+    .current-avatar img {
+        border: 1px solid #ddd;
+        padding: 3px;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'students/base.html' %}
+
+{% block title %}确认删除 - {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>确认删除课程</h2>
+    <div class="confirm-card">
+        <p>您确定要删除课程 <strong>{{ course.course_code }} - {{ course.title }}</strong> 吗？</p>
+        <p class="warning-text">此操作不可撤销，相关数据将永久删除。</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-buttons">
+                <button type="submit" class="btn delete-btn">确认删除</button>
+                <a href="{% url 'course_detail' course.pk %}" class="btn cancel-btn">取消</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
