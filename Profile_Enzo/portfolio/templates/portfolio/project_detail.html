@@ -2,14 +2,29 @@
 {% load i18n %}
 {% load static %}
 
+{% comment %}
+项目详情页面模板
+
+展示项目的详细信息，特别是视频项目的视频内容。
+
+主要功能：
+1. 展示项目标题和描述
+2. 展示主视频（如果有）
+3. 对于视频项目，展示文化介绍内容（中文和英文）
+4. 展示更多视频（视频库）
+5. 提供返回作品集的链接
+6. 提供视频播放模态框
+{% endcomment %}
+
 {% block title %}{{ project.title }} - {% trans '个人作品集' %}{% endblock %}
 
 {% block extra_js %}
+    <!-- 引入视频库相关的JavaScript -->
     <script src="{% static 'portfolio/js/video-gallery.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <!-- Project Detail Header -->
+    <!-- 项目详情头部 -->
     <section class="project-detail-header py-4">
         <div class="container">
             <div class="row">
@@ -26,7 +41,7 @@
         </div>
     </section>
 
-    <!-- Main Video Section -->
+    <!-- 主视频区域 -->
     {% if main_video %}
     <section class="main-video-section py-5 bg-light">
         <div class="container">
@@ -58,13 +73,13 @@
     </section>
     {% endif %}
 
-    <!-- Cultural Introduction (for video project) -->
+    <!-- 文化介绍区域（仅视频项目） -->
     {% if project.slug == 'video' %}
     <section class="cultural-intro py-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 mx-auto">
-                    <!-- Chinese Version -->
+                    <!-- 中文版本 -->
                     <div class="mb-5">
                         <h3 class="mb-4 text-center" style="color: #333; font-weight: 500;">洛阳白马寺介绍</h3>
                         <div class="cultural-content" style="line-height: 1.8; font-size: 1rem; color: #555;">
@@ -80,7 +95,7 @@
 
                     <hr style="border-top: 2px solid #ddd; margin: 3rem 0;">
 
-                    <!-- English Version -->
+                    <!-- 英文版本 -->
                     <div class="mb-5">
                         <h3 class="mb-4 text-center" style="color: #333; font-weight: 500;">Introduction of White Horse Temple in Luo yang</h3>
                         <div class="cultural-content" style="line-height: 1.8; font-size: 1rem; color: #555;">
@@ -99,7 +114,7 @@
     </section>
     {% endif %}
 
-    <!-- Video Gallery -->
+    <!-- 视频库区域 -->
     {% if other_videos %}
     <section class="video-gallery py-5 bg-light">
         <div class="container">
@@ -109,12 +124,12 @@
                 </div>
             </div>
 
-            <!-- Video Grid -->
+            <!-- 视频网格 -->
             <div class="row g-4" id="video-gallery">
                 {% for video in other_videos %}
                 <div class="col-lg-4 col-md-6 col-sm-12 video-card" data-video-id="{{ video.id }}" data-video-src="{{ video.video_file.url }}">
                     <div class="card h-100 video-item" style="cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden;" onmouseover="this.style.transform = 'translateY(-8px)'; this.style.boxShadow = '0 16px 32px rgba(0,0,0,0.16)';" onmouseout="this.style.transform = 'translateY(0)'; this.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';">
-                        <!-- Video Thumbnail -->
+                        <!-- 视频缩略图 -->
                         <div class="position-relative overflow-hidden" style="height: 220px; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 12px 12px 0 0;">
                             {% if video.thumbnail %}
                                 <img src="{{ video.thumbnail.url }}" 
@@ -128,7 +143,7 @@
                                 </div>
                             {% endif %}
                             
-                            <!-- Duration Badge (if available) -->
+                            <!-- 视频时长标签（如果有） -->
                             {% if video.duration %}
                             <div class="position-absolute bottom-0 end-0 m-3">
                                 <span class="badge bg-dark" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; background: rgba(0,0,0,0.7) !important;">
@@ -138,7 +153,7 @@
                             {% endif %}
                         </div>
 
-                        <!-- Video Info -->
+                        <!-- 视频信息 -->
                         <div class="card-body d-flex flex-column" style="padding: 1.25rem;">
                             <h5 class="card-title" style="font-size: 1.05rem; font-weight: 600; color: #333; margin-bottom: 0.6rem; line-height: 1.4;">{{ video.title }}</h5>
                             {% if video.description %}
@@ -157,7 +172,7 @@
                 {% endfor %}
             </div>
 
-            <!-- Info message when video count is small -->
+            <!-- 视频数量较少时的提示信息 -->
             {% if other_videos|length < 3 %}
             <div class="row mt-5">
                 <div class="col-12 text-center text-muted">
@@ -169,7 +184,7 @@
     </section>
     {% endif %}
 
-    <!-- Back to Portfolio -->
+    <!-- 返回作品集 -->
     <section class="py-4 border-top">
         <div class="container">
             <div class="row">
@@ -182,7 +197,7 @@
         </div>
     </section>
 
-    <!-- Video Modal for playing other videos -->
+    <!-- 视频播放模态框 -->
     <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">

@@ -1,10 +1,24 @@
 {% extends 'portfolio/base.html' %}
 {% load i18n %}
 
+{% comment %}
+联系方式页面模板
+
+提供联系表单和联系信息，方便访客与个人取得联系。
+
+主要功能：
+1. 展示页面标题和描述
+2. 提供联系表单，允许访客发送留言
+3. 展示联系信息，包括邮箱、电话和地址
+4. 展示社交媒体链接
+5. 展示工作时间
+6. 预留地图显示区域
+{% endcomment %}
+
 {% block title %}{% trans '联系方式' %} - {% trans '个人作品集' %}{% endblock %}
 
 {% block content %}
-    <!-- Contact Header -->
+    <!-- 联系页面头部 -->
     <section class="contact-header py-5">
         <div class="container">
             <h1 class="text-center mb-3">{% trans '联系我' %}</h1>
@@ -12,11 +26,11 @@
         </div>
     </section>
 
-    <!-- Contact Content -->
+    <!-- 联系内容区域 -->
     <section class="contact-content py-5">
         <div class="container">
             <div class="row">
-                <!-- Contact Form -->
+                <!-- 联系表单 -->
                 <div class="col-md-7 mb-4">
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
@@ -44,13 +58,13 @@
                     </div>
                 </div>
 
-                <!-- Contact Info -->
+                <!-- 联系信息 -->
                 <div class="col-md-5 mb-4">
                     <div class="card shadow-lg">
                         <div class="card-body p-5">
                             <h2 class="mb-4">{% trans '联系信息' %}</h2>
                             
-                            <!-- Contact Details -->
+                            <!-- 联系详情 -->
                             <div class="mb-5">
                                 <div class="mb-4">
                                     <div class="d-flex align-items-center">
@@ -91,7 +105,7 @@
                                 </div>
                             </div>
 
-                            <!-- Social Links -->
+                            <!-- 社交媒体链接 -->
                             <div class="mb-5">
                                 <h3>{% trans '关注我' %}</h3>
                                 <div class="d-flex gap-3">
@@ -113,7 +127,7 @@
                                 </div>
                             </div>
 
-                            <!-- Business Hours -->
+                            <!-- 工作时间 -->
                             <div>
                                 <h3>{% trans '工作时间' %}</h3>
                                 <ul class="list-unstyled">
@@ -138,7 +152,7 @@
         </div>
     </section>
 
-    <!-- Map Section -->
+    <!-- 地图区域 -->
     <section class="map-section py-5">
         <div class="container">
             <div class="card shadow-lg">
