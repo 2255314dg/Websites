@@ -20,3 +20,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# Django administration
+# SuperUser Name:Ryan
+# SuperUser Email:3227943924@qq.com
+# SuperUser Password:Zez12300403@864

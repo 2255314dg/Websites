@@ -15,6 +15,7 @@ PROJECT_IMAGE_MAPPING = {
     '视频剪辑与制作': 'pictures/视频剪辑与制作.png',
     '音频制作与混音': 'pictures/音频制作与混音.png',
     '特效设计与制作': 'pictures/特效设计与制作.png',
+    '场景设计': 'pictures/场景设计.jpg',
 }
 
 CATEGORY_MAPPING = {
@@ -26,6 +27,7 @@ CATEGORY_MAPPING = {
     '视频剪辑与制作': '后期处理',
     '音频制作与混音': '后期处理',
     '特效设计与制作': '后期处理',
+    '场景设计': '后期处理',
 }
 
 PROJECT_ORDER = [
@@ -37,6 +39,7 @@ PROJECT_ORDER = [
     '视频剪辑与制作',
     '音频制作与混音',
     '特效设计与制作',
+    '场景设计',
 ]
 
 # 固定分类列表 - 作品集页面展示的分类顺序
@@ -84,6 +87,7 @@ def get_standard_category(category):
         '视频剪辑与制作': '后期处理',
         '音频制作与混音': '后期处理',
         '特效设计与制作': '后期处理',
+        '场景设计': '后期处理',  
     }
     return mapping.get(category, category)
 
