@@ -34,5 +34,4 @@ urlpatterns += i18n_patterns(
 
 # 添加静态文件和媒体文件的URL配置
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

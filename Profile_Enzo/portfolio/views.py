@@ -100,7 +100,7 @@ def home(request):
         'personal_info': personal_info,
         'projects': projects,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'portfolio/home.html', context)
 
 def about(request):
     """关于我页面视图"""
@@ -110,7 +110,7 @@ def about(request):
         'personal_info': personal_info,
         'certificates': certificates,
     }
-    return render(request, 'about.html', context)
+    return render(request, 'portfolio/about.html', context)
 
 
 def portfolio(request):
@@ -138,7 +138,7 @@ def portfolio(request):
         'selected_category': selected_category,
         'page_obj': page_obj,
     }
-    return render(request, 'portfolio.html', context)
+    return render(request, 'portfolio/portfolio.html', context)
 
 def project_detail(request, project_slug):
     """项目详情页面视图"""
@@ -152,7 +152,7 @@ def project_detail(request, project_slug):
         'main_video': main_video,
         'other_videos': other_videos,
     }
-    return render(request, 'project_detail.html', context)
+    return render(request, 'portfolio/project_detail.html', context)
 
 def contact(request):
     """联系方式页面视图"""
@@ -160,4 +160,4 @@ def contact(request):
     context = {
         'personal_info': personal_info,
     }
-    return render(request, 'contact.html', context)
+    return render(request, 'portfolio/contact.html', context)

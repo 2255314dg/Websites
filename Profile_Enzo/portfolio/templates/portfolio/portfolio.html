@@ -1,0 +1,97 @@
+{% extends 'portfolio/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans '作品集' %} - {% trans '个人作品集' %}{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'portfolio/js/portfolio.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- Page Header -->
+    <section class="page-header py-5">
+        <div class="container">
+            <h1 class="text-center mb-3">{% trans '我的作品集' %}</h1>
+            <p class="text-center text-muted">{% trans '探索我的创意项目和作品' %}</p>
+        </div>
+    </section>
+
+    <!-- Category Filters (服务器端过滤) -->
+    <section class="filters-section py-2">
+        <div class="container">
+            <div class="text-center mb-2">
+                <a href="?category=all" class="btn {% if selected_category == 'all' %}btn-primary active{% else %}btn-outline-primary{% endif %}" style="margin-right: 12px; margin-bottom: 8px;">{% trans '所有项目' %}</a>
+                {% for category in categories %}
+                    <a href="?category={{ category|urlencode }}" class="btn {% if selected_category == category %}btn-primary active{% else %}btn-outline-primary{% endif %}" style="margin-right: 12px; margin-bottom: 8px;">{{ category }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-grid py-5">
+        <div class="container">
+            <div class="row">
+                {% for project in projects %}
+                    <div class="col-md-4 mb-4 project-item" data-category="{{ project.standard_category }}">
+                        <div class="card h-100">
+                            <div class="position-relative">
+                                {% if project.image %}
+                        <img src="{{ project.image.url }}" loading="lazy" decoding="async" class="card-img-top" alt="{{ project.title }}" style="height: 250px; object-fit: cover;">
+                    {% elif project.fallback_image %}
+                        <img src="{{ MEDIA_URL }}{{ project.fallback_image }}" loading="lazy" decoding="async" class="card-img-top" alt="{{ project.title }}" style="height: 250px; object-fit: cover; object-position: center;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 250px;">
+                            <p class="mb-0">{{ project.title }}</p>
+                        </div>
+                    {% endif %}
+                                <div class="position-absolute top-0 left-0 bg-primary text-white px-3 py-1 rounded-bottom-right">
+                                    {{ project.standard_category }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ project.title }}</h5>
+                                <p class="card-text small text-muted">
+                                    {{ project.start_date|date:"Y年m月" }}{% if project.end_date %} - {{ project.end_date|date:"Y年m月" }}{% else %} - {% trans '至今' %}{% endif %}
+                                </p>
+                                <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+                                <div class="d-flex">
+                                    <a href="{% url 'project_detail' project.slug %}" class="btn btn-primary">{% trans '查看详情' %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if projects.paginator.count == 0 %}
+                    <div class="col-12 text-center text-muted">
+                        <p>{% trans '没有符合条件的项目。' %}</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="py-4">
+        <div class="container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?category={{ selected_category|urlencode }}&page={{ page_obj.previous_page_number }}">&laquo; {% trans '上一页' %}</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">&laquo; {% trans '上一页' %}</span></li>
+                    {% endif %}
+
+                    <li class="page-item disabled"><span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span></li>
+
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?category={{ selected_category|urlencode }}&page={{ page_obj.next_page_number }}">{% trans '下一页' %} &raquo;</a></li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">{% trans '下一页' %} &raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <!-- 可根据需要把分页/筛选逻辑迁移到独立的静态 JS 文件 -->
+{% endblock %}

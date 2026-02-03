@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+{% load static %}
+{% load i18n %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}个人作品集{% endblock %}</title>
+    <!-- 引入Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入自定义CSS -->
+    <link rel="stylesheet" href="{% static 'portfolio/css/main.css' %}">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">{% trans '我的个人主页' %}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' or request.path == '/home/' %}active{% endif %}" aria-current="page" href="{% url 'home' %}">{% trans '首页' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'about' %}">{% trans '关于我' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/portfolio/' %}active{% endif %}" href="{% url 'portfolio' %}">{% trans '作品集' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/contact/' %}active{% endif %}" href="{% url 'contact' %}">{% trans '联系方式' %}</a>
+                    </li>
+                    <!-- 语言切换 -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {% if LANGUAGE_CODE == 'zh-CN' %}{% trans '中文' %}{% else %}{% trans 'English' %}{% endif %}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="px-3">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input name="language" type="hidden" value="zh-CN">
+                                    <button type="submit" class="dropdown-item{% if LANGUAGE_CODE == 'zh-CN' %} active{% endif %}">{% trans '中文' %}</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="px-3">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.path }}">
+                                    <input name="language" type="hidden" value="en">
+                                    <button type="submit" class="dropdown-item{% if LANGUAGE_CODE == 'en' %} active{% endif %}">{% trans 'English' %}</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <!-- 音乐播放器 -->
+                        <div class="music-player ms-3">
+                            <audio id="background-music" src="/media/music/就是南方凯 - 巡光.mp3" loop>
+                                {% trans '您的浏览器不支持音频元素。' %}
+                            </audio>
+                            <button id="music-toggle" class="btn btn-link text-white p-0" title="{% trans '播放/暂停音乐' %}">
+                                <img src="/media/icons/001.png" alt="音乐控制" class="music-control-icon" width="24" height="24">
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容 -->
+    <main class="container mt-5 pt-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2025 {% trans 'Enzo' %} {% trans '保留所有权利' %}.</p>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <a href="{{ personal_info.github }}" class="text-white me-3 social-icon" target="_blank">
+                        <img src="/media/icons/Github.png" alt="GitHub" style="width: 28px; height: 28px; vertical-align: middle;">
+                    </a>
+                    <a href="{{ personal_info.twitter }}" class="text-white me-3 social-icon" target="_blank">
+                        <img src="/media/icons/Twitter.png" alt="Twitter" style="width: 24px; height: 24px; vertical-align: middle;">
+                    </a>
+                    <a href="{{ personal_info.meta }}" class="text-white me-3 social-icon" target="_blank">
+                        <img src="/media/icons/Meta.png" alt="Meta" style="width: 26px; height: 24px; vertical-align: middle;">
+                    </a>
+                    <a href="{{ personal_info.instagram }}" class="text-white social-icon" target="_blank">
+                        <img src="/media/icons/Instagram.png" alt="Instagram" style="width: 28px; height: 28px; vertical-align: middle;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 引入Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- 引入自定义JS -->
+    <script src="{% static 'portfolio/js/main.js' %}"></script>
+    <!-- 页面特定脚本块 -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
