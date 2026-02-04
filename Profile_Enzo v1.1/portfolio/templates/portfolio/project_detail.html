@@ -1,0 +1,260 @@
+{% extends 'portfolio/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% comment %}
+项目详情页面模板
+
+展示项目的详细信息，特别是视频项目的视频内容。
+
+主要功能：
+1. 展示项目标题和描述
+2. 展示主视频（如果有）
+3. 对于视频项目，展示文化介绍内容（中文和英文）
+4. 展示更多视频（视频库）
+5. 提供返回作品集的链接
+6. 提供视频播放模态框
+{% endcomment %}
+
+{% block title %}{{ project.title }} - {% trans '个人作品集' %}{% endblock %}
+
+{% block extra_js %}
+    <!-- 引入视频库相关的JavaScript -->
+    <script src="{% static 'portfolio/js/video-gallery.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <!-- 项目详情头部 -->
+    <section class="project-detail-header py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 mx-auto text-center">
+                    {% if project.slug != 'video' %}
+                    <h1 class="mb-3">{{ project.title }}</h1>
+                    {% endif %}
+                    <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+                        <h2 class="mb-0" style="font-size: 2rem; font-weight: 700; color: #333;">视频剪辑与制作</h2>
+                        <span class="text-muted" style="font-size: 1.05rem; max-width: 600px; line-height: 1.6; text-align: center; color: #666;">使用Pr、剪映和即梦等软件，借助人工智能技术，完成视频的剪辑与制作。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主视频区域 -->
+    {% if main_video %}
+    <section class="main-video-section py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <h2 class="mb-4 text-center">{% if project.slug == 'video' %}数字人带你看世界——洛阳白马寺{% else %}{% trans '主视频' %}{% endif %}</h2>
+                    <div class="main-video-wrapper position-relative">
+                        <video id="main-video" 
+                               src="{{ main_video.video_file.url }}" 
+                               controls 
+                               controlsList="nodownload"
+                               style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+                            {% trans '您的浏览器不支持视频播放。' %}
+                        </video>
+                    </div>
+                    {% if main_video.title and main_video.title != '白马寺' %}
+                    <h3 class="mt-4 mb-2">{{ main_video.title }}</h3>
+                    {% endif %}
+                    {% if project.slug == 'video' %}
+                    <p class="text-muted">通过数字人技术为大家带来洛阳白马寺的讲解，希望大家喜欢！</p>
+                    {% else %}
+                        {% if main_video.description %}
+                        <p class="text-muted">{{ main_video.description }}</p>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 文化介绍区域（仅视频项目） -->
+    {% if project.slug == 'video' %}
+    <section class="cultural-intro py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <!-- 中文版本 -->
+                    <div class="mb-5">
+                        <h3 class="mb-4 text-center" style="color: #333; font-weight: 500;">洛阳白马寺介绍</h3>
+                        <div class="cultural-content" style="line-height: 1.8; font-size: 1rem; color: #555;">
+                            <p>你可曾想过，一座寺庙竟能开启一个文明的对话时代？在洛阳城东，有一座看似古朴的寺院，却藏着中国佛教的"基因密码"——这就是始建于东汉永平十一年（公元68年）的白马寺。当两位印度高僧牵着驮经白马踏过丝绸之路来到中原，他们带来的不仅是佛经，更是一颗文明的种子，从此在这片土地上生长出独特的汉传佛教园林。</p>
+                            
+                            <p>让我们沿着中轴线缓缓而行，这座"中国第一古刹"就像一部立体的史书。天王殿的明代彩塑仍保持着威严与慈悲的微妙平衡，大雄殿的元代三世佛静默讲述着时空的流转。而最令人惊叹的是，这里不仅有典型的汉式青瓦红柱，还汇聚着印度桑奇大塔风格的佛殿、缅甸的金色钟楼和泰式佛堂。这种建筑对话不是简单的拼贴，而是千年佛教传播史的生动注脚——就像不同文化的和声，各自保持音色，却奏出和谐的乐章。</p>
+                            
+                            <p>走到清凉台，别忘了在西侧的齐云塔尝试一个小游戏：面对塔身拍手，聆听那声奇妙的"蛙鸣"回声。古人将声学智慧融入建筑，让冰冷的砖石也能与游人嬉戏。这何尝不是一种启示：真正的文化传承，既需要庄重的仪式感，也需要这样活泼的生命力。</p>
+                            
+                            <p>当夕阳为寺内的断文碑染上金辉，你会发现白马寺最动人的秘密：它不仅是历史的见证者，更是活的文化载体。从古代僧人的译经声到今日游客的脚步声，这里始终是东方文明对话的客厅，提醒着我们：伟大的文化从来不是孤峰，而是连绵的山脉，在交流中愈发雄伟。</p>
+                        </div>
+                    </div>
+
+                    <hr style="border-top: 2px solid #ddd; margin: 3rem 0;">
+
+                    <!-- 英文版本 -->
+                    <div class="mb-5">
+                        <h3 class="mb-4 text-center" style="color: #333; font-weight: 500;">Introduction of White Horse Temple in Luo yang</h3>
+                        <div class="cultural-content" style="line-height: 1.8; font-size: 1rem; color: #555;">
+                            <p>What if I told you that a single temple unlocked the dialogue between civilizations? East of Luoyang stands the White Horse Temple (Baima Si), founded in 68 AD—a place where Chinese Buddhism took its first breath. When two Indian monks arrived along the Silk Road, their white horse carrying sutras, they planted a seed that would grow into a unique spiritual landscape.</p>
+                            
+                            <p>Walking along the central axis is like tracing the DNA of East Asian Buddhism. The Ming-era Heavenly King Hall statues balance majesty and compassion, while the Yuan Dynasty Buddha Triad in the Main Hall whispers of eternity. But the real marvel lies beyond traditional Chinese architecture: an Indian-style pagoda inspired by Sanchi, a golden Burmese bell tower, and a Thai-style shrine stand side by side. This isn't just architectural diversity—it's a living map of Buddhism's journey, showing how cultures harmonize without losing their distinct voices.</p>
+                            
+                            <p>Don't miss the Qiyun Pagoda's playful secret: clap your hands and listen for the frog-like echo, an ancient acoustic wonder that turns stone into a conversation partner. It reminds us that true cultural heritage balances reverence with joy.</p>
+                            
+                            <p>As sunlight touches the Tang-era stone tablets, you'll sense the temple's deepest magic: it's not a relic but a living crossroads. From sutra translations that once echoed here to today's global visitors, White Horse Temple remains a timeless "cultural living room"—proof that great civilizations grow not in isolation, but through endless dialogue. White Horse Temple is a galaxy of cultural convergence, where every hall shines like a star, illuminating humanity's eternal pursuit of beauty and wisdom.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 视频库区域 -->
+    {% if other_videos %}
+    <section class="video-gallery py-5 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h2 class="mb-5 text-center">{% trans '更多视频' %}</h2>
+                </div>
+            </div>
+
+            <!-- 视频网格 -->
+            <div class="row g-4" id="video-gallery">
+                {% for video in other_videos %}
+                <div class="col-lg-4 col-md-6 col-sm-12 video-card" data-video-id="{{ video.id }}" data-video-src="{{ video.video_file.url }}">
+                    <div class="card h-100 video-item" style="cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 12px; border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.08); overflow: hidden;" onmouseover="this.style.transform = 'translateY(-8px)'; this.style.boxShadow = '0 16px 32px rgba(0,0,0,0.16)';" onmouseout="this.style.transform = 'translateY(0)'; this.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)';">
+                        <!-- 视频缩略图 -->
+                        <div class="position-relative overflow-hidden" style="height: 220px; border-radius: 12px 12px 0 0;">
+                            {% if video.thumbnail %}
+                                <img src="{{ video.thumbnail.url }}" 
+                                     class="card-img-top" 
+                                     alt="{{ video.title }}"
+                                     style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;">
+                            {% else %}
+                                <!-- 默认视频缩略图（渐变背景） -->
+                                <div class="d-flex align-items-center justify-content-center" style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <i class="bi bi-play-circle" style="font-size: 3rem; color: white; opacity: 0.8;"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- 视频时长标签（如果有） -->
+                            {% if video.duration %}
+                            <div class="position-absolute bottom-0 end-0 m-3">
+                                <span class="badge bg-dark" style="font-size: 0.75rem; padding: 0.4rem 0.8rem; background: rgba(0,0,0,0.7) !important;">
+                                    {% widthratio video.duration 60 1 %}m {% widthratio video.duration 60 0 %}s
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- 视频信息 -->
+                        <div class="card-body d-flex flex-column" style="padding: 1.25rem;">
+                            <h5 class="card-title" style="font-size: 1.05rem; font-weight: 600; color: #333; margin-bottom: 0.6rem; line-height: 1.4;">{{ video.title }}</h5>
+                            {% if video.description %}
+                            <p class="card-text text-muted" style="font-size: 0.85rem; flex-grow: 1; color: #666; line-height: 1.5; margin-bottom: 0.8rem;">
+                                {{ video.description|truncatewords:15 }}
+                            </p>
+                            {% endif %}
+                            <div class="mt-auto">
+                                <button class="btn btn-sm btn-primary w-100 play-btn" data-video-id="{{ video.id }}" style="border-radius: 6px; font-weight: 500; transition: all 0.3s ease; border: none; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);" onmouseover="this.style.transform = 'translateY(-2px)'; this.style.boxShadow = '0 6px 16px rgba(102, 126, 234, 0.4)';" onmouseout="this.style.transform = 'translateY(0)'; this.style.boxShadow = 'none';">
+                                    <i class="bi bi-play-fill"></i> {% trans '播放视频' %}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- 视频数量较少时的提示信息 -->
+            {% if other_videos|length < 3 %}
+            <div class="row mt-5">
+                <div class="col-12 text-center text-muted">
+                    <p>{% trans '敬请期待更多精彩视频内容！' %}</p>
+                </div>
+            </div>
+            {% endif %}
+            
+            <!-- 分页控件 -->
+            {% if page_obj.has_other_pages %}
+            <div class="row mt-5">
+                <div class="col-12">
+                    <nav aria-label="视频分页">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1" aria-disabled="true">上一页</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">上一页</a>
+                            </li>
+                            {% endif %}
+                            
+                            {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                            <li class="page-item active" aria-current="page">
+                                <a class="page-link" href="#">{{ i }}</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">下一页</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">下一页</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- 返回作品集 -->
+    <section class="py-4 border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <a href="{% url 'portfolio' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> {% trans '返回作品集' %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 视频播放模态框 -->
+    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <video id="modal-video" controls style="width: 100%; height: auto;">
+                        {% trans '您的浏览器不支持视频播放。' %}
+                    </video>
+                </div>
+                <div class="modal-footer flex-column align-items-start">
+                    <h5 id="modal-video-title" class="w-100 mb-2">视频标题</h5>
+                    <p id="modal-video-description" class="text-muted mb-3 w-100"></p>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans '关闭' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
