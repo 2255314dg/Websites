@@ -22,8 +22,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                        <video id="mainVideoPlayer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" controls poster="/media/pictures/白马寺.jpg">
+                    <div class="video-container">
+                        <video id="mainVideoPlayer" class="w-100 h-auto" controls preload="metadata" controlsList="nodownload" poster="/media/pictures/白马寺.jpg">
                             <source src="/media/videos/001-baimasi.mp4" type="video/mp4">
                             您的浏览器不支持视频播放。
                         </video>
@@ -100,7 +100,7 @@
 
             <div class="section-header mb-8 text-center">
                 <h2 class="h3 font-bold text-gray-800 mb-0">
-                    <i class="bi bi-collection-play me-2 text-blue-500"></i>其他视频
+                    <i class="bi bi-collection-play me-2 text-blue-500"></i>其它视频
                 </h2>
             </div>
 
@@ -117,7 +117,7 @@
                 </div>
                 <div class="text-gray-600 flex items-center">
                     <i class="bi bi-film me-2 text-blue-500"></i>
-                    <span>{% if selected_category == '游学系列' %}共 0 个视频{% elif selected_category == '全部' %}共 7 个视频{% else %}共 1 个视频{% endif %}</span>
+                    <span>{% if selected_category == '游学系列' %}共 0 个视频{% elif selected_category == '全部' %}共 8 个视频{% else %}共 1 个视频{% endif %}</span>
                 </div>
             </div>
 
@@ -236,17 +236,7 @@
                                 </div>
                                 <div class="p-5">
                                     <h3 class="h6 font-bold text-gray-800 mb-3 line-clamp-1">梦回上海滩</h3>
-                                    <p class="text-sm text-gray-600 mb-4 line-clamp-2">自然风景短片，捕捉四季变化。</p>
-                                    <div class="flex justify-between items-center mb-4">
-                                        <p class="text-xs text-gray-500">
-                                            <i class="bi bi-collection me-1"></i>
-                                            全部, 旅游系列
-                                        </p>
-                                        <span class="text-xs text-gray-400">
-                                            <i class="bi bi-calendar"></i>
-                                            2026-02-01
-                                        </span>
-                                    </div>
+                                    <p class="text-sm text-gray-600 mb-4 line-clamp-2">伴随歌声走进上海滩，感受魔都的梦幻与魅力。</p>
                                     <button class="btn btn-primary w-100 py-2 rounded-lg transition-all duration-300 hover:bg-blue-600" onclick="playVideo()">
                                         <i class="bi bi-play-fill me-2"></i>播放视频
                                     </button>
@@ -390,7 +380,7 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content" style="border-radius: 0.5rem; overflow: hidden;">
                         <div class="modal-body p-0">
-                            <video id="videoPlayer" class="w-100" controls style="border-radius: 0.5rem;">
+                            <video id="videoPlayer" class="w-100" controls preload="metadata" controlsList="nodownload">
                                 <source src="/media/videos/002-梦回上海滩.mp4" type="video/mp4">
                                 您的浏览器不支持视频播放。
                             </video>
@@ -413,23 +403,89 @@
             videoModal.show();
         }
 
+        // 增强视频控件功能
+        function enhanceVideoControls(videoElement) {
+            if (!videoElement) return;
+            
+            // 确保视频可以被拖动
+            videoElement.addEventListener('loadedmetadata', function() {
+                console.log('视频元数据已加载，时长:', this.duration);
+            });
+            
+            // 确保视频可以被拖动
+            videoElement.addEventListener('seeked', function() {
+                console.log('视频已定位到:', this.currentTime);
+            });
+            
+            // 确保视频可以被拖动
+            videoElement.addEventListener('seeking', function() {
+                console.log('视频正在定位到:', this.currentTime);
+            });
+        }
+
         // 页面加载时初始化事件监听器
         document.addEventListener('DOMContentLoaded', function() {
+            const mainVideoPlayer = document.getElementById('mainVideoPlayer');
             const videoPlayer = document.getElementById('videoPlayer');
             const videoModalElement = document.getElementById('videoModal');
             const videoItems = document.querySelectorAll('.video-item');
             
+            // 增强视频控件功能
+            enhanceVideoControls(mainVideoPlayer);
+            enhanceVideoControls(videoPlayer);
+            
             // 初始化视频播放器事件监听器
             if (videoModalElement && videoPlayer) {
-                // 当模态框显示后播放视频
+                // 当模态框显示后播放视频，并暂停主视频
                 videoModalElement.addEventListener('shown.bs.modal', function () {
-                    videoPlayer.play();
+                    // 暂停主视频
+                    if (mainVideoPlayer && !mainVideoPlayer.paused) {
+                        mainVideoPlayer.pause();
+                    }
+                    // 确保视频元数据已加载后再播放
+                    if (videoPlayer.readyState >= 1) {
+                        videoPlayer.play();
+                    } else {
+                        videoPlayer.addEventListener('loadedmetadata', function() {
+                            videoPlayer.play();
+                        }, { once: true });
+                    }
                 });
                 
                 // 当模态框隐藏时停止视频
                 videoModalElement.addEventListener('hidden.bs.modal', function () {
                     videoPlayer.pause();
                     videoPlayer.currentTime = 0;
+                });
+            }
+            
+            // 为主视频添加播放事件监听器，当主视频播放时暂停模态框视频
+            if (mainVideoPlayer) {
+                mainVideoPlayer.addEventListener('play', function() {
+                    if (videoPlayer && !videoPlayer.paused) {
+                        videoPlayer.pause();
+                    }
+                });
+                
+                // 确保主视频元数据加载完成，解决进度条无法拖动的问题
+                mainVideoPlayer.addEventListener('loadedmetadata', function() {
+                    // 视频元数据加载完成后，进度条应该可以正常工作
+                });
+                
+                // 确保视频数据加载完成
+                mainVideoPlayer.addEventListener('canplay', function() {
+                    // 视频可以播放时，进度条应该可以正常拖动
+                });
+            }
+            
+            // 为模态框视频添加相同的事件监听器
+            if (videoPlayer) {
+                videoPlayer.addEventListener('loadedmetadata', function() {
+                    // 视频元数据加载完成后，进度条应该可以正常工作
+                });
+                
+                videoPlayer.addEventListener('canplay', function() {
+                    // 视频可以播放时，进度条应该可以正常拖动
                 });
             }
             
@@ -522,21 +578,7 @@
             scrollbar-color: #3b82f6 #e9ecef;
         }
 
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-        }
 
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
 
         @media (max-width: 768px) {
             #video-gallery {

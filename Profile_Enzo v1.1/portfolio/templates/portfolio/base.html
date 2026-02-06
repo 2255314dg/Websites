@@ -21,6 +21,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}个人作品集{% endblock %}</title>
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%233b82f6' class='bi bi-person' viewBox='0 0 16 16'%3E%3Cpath d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z'/%3E%3C/svg%3E">
     <!-- 引入Bootstrap CSS框架 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- 引入自定义CSS样式 -->
@@ -73,13 +75,13 @@
     <!-- 页脚 -->
     <footer class="bg-dark text-white py-4 mt-5">
         <div class="container">
-            <div class="row">
+            <div class="row d-flex align-items-center">
                 <!-- 版权信息 -->
-                <div class="col-md-6">
+                <div class="col">
                     <p>&copy; 2025 Enzo 保留所有权利.</p>
                 </div>
                 <!-- 社交媒体链接 -->
-                <div class="col-md-6 text-md-right">
+                <div class="col-auto ml-auto">
                     <a href="{{ personal_info.github }}" class="text-white me-3 social-icon" target="_blank">
                         <img src="/media/icons/Github.png" alt="GitHub" style="width: 28px; height: 28px; vertical-align: middle;">
                     </a>
